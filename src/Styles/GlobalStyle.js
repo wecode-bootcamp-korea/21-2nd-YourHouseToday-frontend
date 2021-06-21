@@ -4,6 +4,27 @@ import reset from 'styled-reset';
 const GlobalStyle = createGlobalStyle`
   ${reset};
 
+* {
+  box-sizing: border-box;
+}
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+img {
+  object-fit: cover;
+}
+input[type='checkbox'] {
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+html {
+  overflow-x: hidden;
+}
+
 `;
 
 export default GlobalStyle;
