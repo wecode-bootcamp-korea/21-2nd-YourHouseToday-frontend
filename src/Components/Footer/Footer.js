@@ -12,11 +12,11 @@ class Footer extends React.Component {
             <CenterTime>평일 09:00 ~ 18:00 (주말 & 공휴일 제외)</CenterTime>
           </CsCenter>
           <SocialLogo>
-            <i class="fab fa-apple"></i>
-            <i class="fab fa-google-play"></i>
-            <i class="fab fa-youtube"></i>
-            <i class="fab fa-facebook-f"></i>
-            <i class="fab fa-instagram"></i>
+            <i className="fab fa-apple"></i>
+            <i className="fab fa-google-play"></i>
+            <i className="fab fa-youtube"></i>
+            <i className="fab fa-facebook-f"></i>
+            <i className="fab fa-instagram"></i>
           </SocialLogo>
         </Header>
         <div>
@@ -50,7 +50,9 @@ class Footer extends React.Component {
           거래에 대하여 (주)오늘의 너네집은 일체 책임을 지지 않습니다.
           <br />
           <br />
-          <p>Copyright 2021. yourhousetoday, Co., Ltd. All rights reserved</p>
+          <span>
+            Copyright 2021. yourhousetoday, Co., Ltd. All rights reserved
+          </span>
         </Info>
       </Container>
     );
@@ -114,7 +116,7 @@ const Info = styled.p`
   font-size: 10px;
   color: #757575;
 
-  p {
+  span {
     color: #424242;
   }
 `;

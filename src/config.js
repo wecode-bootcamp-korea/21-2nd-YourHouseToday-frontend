@@ -1,2 +1,5 @@
-export const API =
-  'https://www.notion.so/wecode/React-Styled-Components-761ad57c7a6d4ce8a10dc683e1866a8a';
+const BASE_URL = 'http://3.35.19.149:8000';
+
+export const GET_EDITINFO_API = `${BASE_URL}/users/nickname-check`;
+export const GET_SIGNIN_API = `${BASE_URL}/users/signin`;
+export const GET_SIGNUP_API = `${BASE_URL}/users/signup`;
