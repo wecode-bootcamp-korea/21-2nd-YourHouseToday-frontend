@@ -21,6 +21,7 @@ input[type='checkbox'] {
 }
 a {
   text-decoration: none;
+  cursor: pointer;
 }
 html {
   overflow-x: hidden;
