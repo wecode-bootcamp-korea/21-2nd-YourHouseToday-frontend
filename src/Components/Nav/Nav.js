@@ -1,53 +1,43 @@
 import React from 'react';
 import styled from 'styled-components';
-import { createGlobalStyle } from 'styled-components';
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    height: 10000px;
-  }
-`;
 
 class Nav extends React.Component {
   render() {
     return (
-      <>
-        <GlobalStyle />
-        <Container onScroll={this.handleScroll}>
-          <Wrapper>
-            <Logo alt="로고" src="Images/오늘의집 로고.png"></Logo>
-            <Catagory>
-              <span>커뮤니티</span>
-              <span>스토어</span>
-              <span>인테리어시공</span>
-            </Catagory>
-            <SmallWrapper>
-              <InputBox>
-                <Input placeholder="오늘은 너네집 통합검색"></Input>
-                <i className="fas fa-search"></i>
-              </InputBox>
-              <ButtonBox>
-                <button>로그인</button>
-                <div></div>
-                <button>회원가입</button>
-              </ButtonBox>
-              <Write>글쓰기</Write>
-            </SmallWrapper>
-          </Wrapper>
-          <MenuContainer>
-            <div>
-              <span>홈</span>
-              <span>팔로잉</span>
-              <span>사진</span>
-              <span>집들이</span>
-              <span>노하우</span>
-              <span>전문가집들이</span>
-              <span>셀프가이드</span>
-              <span>질문과답변</span>
-            </div>
-          </MenuContainer>
-        </Container>
-      </>
+      <Container onScroll={this.handleScroll}>
+        <Wrapper>
+          <Logo alt="로고" src="Images/오늘의집 로고.png"></Logo>
+          <Catagory>
+            <span>커뮤니티</span>
+            <span>스토어</span>
+            <span>인테리어시공</span>
+          </Catagory>
+          <SmallWrapper>
+            <InputBox>
+              <Input placeholder="오늘은 너네집 통합검색"></Input>
+              <i className="fas fa-search"></i>
+            </InputBox>
+            <ButtonBox>
+              <button>로그인</button>
+              <div></div>
+              <button>회원가입</button>
+            </ButtonBox>
+            <Write>글쓰기</Write>
+          </SmallWrapper>
+        </Wrapper>
+        <MenuContainer>
+          <div>
+            <span>홈</span>
+            <span>팔로잉</span>
+            <span>사진</span>
+            <span>집들이</span>
+            <span>노하우</span>
+            <span>전문가집들이</span>
+            <span>셀프가이드</span>
+            <span>질문과답변</span>
+          </div>
+        </MenuContainer>
+      </Container>
     );
   }
 }
