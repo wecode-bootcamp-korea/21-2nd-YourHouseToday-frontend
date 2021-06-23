@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useParams,
+} from 'react-router-dom';
 import Main from './Pages/Main/Main';
 import Writing from './Pages/Writing/Writing';
 import FeedDetail from './Pages/FeedDetail/FeedDetail';
@@ -14,7 +19,7 @@ class Routes extends React.Component {
   render() {
     return (
       <Router>
-        <Nav />
+        {/* <Nav /> */}
         <Switch>
           <Route exact path="/postings" component={Main} />
           <Route exact path="/writing" component={Writing} />
@@ -25,7 +30,7 @@ class Routes extends React.Component {
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/mypage" component={Mypage} />
         </Switch>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     );
   }
