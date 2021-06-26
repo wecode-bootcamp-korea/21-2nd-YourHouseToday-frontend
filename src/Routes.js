@@ -6,6 +6,7 @@ import FeedDetail from './Pages/FeedDetail/FeedDetail';
 import Login from './Pages/Login/Login';
 import EditUserName from './Pages/Login/EditUserName';
 import Signup from './Pages/SignUp/SignUp';
+import Mypage from './Pages/Mypage/Mypage';
 import Nav from './Components/Nav/Nav';
 import Footer from './Components/Footer/Footer';
 
@@ -22,6 +23,7 @@ class Routes extends React.Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/editusername" component={EditUserName} />
           <Route exact path="/signup" component={Signup} />
+          <Route exact path="/mypage" component={Mypage} />
         </Switch>
         <Footer />
       </Router>
