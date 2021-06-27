@@ -41,77 +41,84 @@ function Nav() {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Link to={'/'}>
-          <Logo alt="로고" src="Images/Logo/오늘의집 로고.png" />
-        </Link>
-        <Catagory>
-          <span>커뮤니티</span>
-          <span>스토어</span>
-          <span>인테리어시공</span>
-        </Catagory>
-        <SmallWrapper>
-          <InputBox>
-            <Input placeholder="오늘은 너네집 통합검색" />
-            <i className="fas fa-search" />
-          </InputBox>
-          {!getInfo && (
-            <ButtonBox>
-              <button onClick={handleLogin}>로그인 / 회원가입</button>
-            </ButtonBox>
+    <>
+      {location.pathname !== '/writing' ? (
+        <Container>
+          <Wrapper>
+            <Link to={'/'}>
+              <Logo alt="로고" src="Images/Logo/오늘의집 로고.png" />
+            </Link>
+            <Catagory>
+              <span>커뮤니티</span>
+              <span>스토어</span>
+              <span>인테리어시공</span>
+            </Catagory>
+            <SmallWrapper>
+              <InputBox>
+                <Input placeholder="오늘은 너네집 통합검색" />
+                <i className="fas fa-search" />
+              </InputBox>
+              {!getInfo && (
+                <ButtonBox>
+                  <button onClick={handleLogin}>로그인 / 회원가입</button>
+                </ButtonBox>
+              )}
+              {getInfo && (
+                <>
+                  <BookMark>
+                    <i className="far fa-bookmark" />
+                  </BookMark>
+                  <Bell>
+                    <i className="far fa-bell" />
+                  </Bell>
+                  <ProfileBox onClick={handleList}>
+                    <div>
+                      <ProfileImg
+                        alt="프로필사진"
+                        src={getInfo.profile_image}
+                      />
+                      <PageList isDisplay={isClicked}>
+                        <MyPage>마이페이지</MyPage>
+                        <LogOut onClick={logoutWithKakao}>로그아웃</LogOut>
+                      </PageList>
+                    </div>
+                    <i className="fas fa-sort-down"></i>
+                  </ProfileBox>
+                </>
+              )}
+              <Write>글쓰기</Write>
+            </SmallWrapper>
+          </Wrapper>
+          <MenuContainer>
+            <Menu>
+              {MenuList.map((list, idx) => (
+                <MenuItem
+                  to={list.path}
+                  key={idx}
+                  id={list.id}
+                  onClick={handleTab}
+                  chooseTab={parseInt(isTab) === list.id}
+                >
+                  {list.name}
+                </MenuItem>
+              ))}
+            </Menu>
+          </MenuContainer>
+          {isOpen ? (
+            <Login
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              getInfo={getToken}
+              getToken={getToken}
+              setGetInfo={setGetInfo}
+              setGetToken={setGetToken}
+            />
+          ) : (
+            ''
           )}
-          {getInfo && (
-            <>
-              <BookMark>
-                <i className="far fa-bookmark" />
-              </BookMark>
-              <Bell>
-                <i className="far fa-bell" />
-              </Bell>
-              <ProfileBox onClick={handleList}>
-                <div>
-                  <ProfileImg alt="프로필사진" src={getInfo.profile_image} />
-                  <PageList isDisplay={isClicked}>
-                    <MyPage>마이페이지</MyPage>
-                    <LogOut onClick={logoutWithKakao}>로그아웃</LogOut>
-                  </PageList>
-                </div>
-                <i className="fas fa-sort-down"></i>
-              </ProfileBox>
-            </>
-          )}
-          <Write>글쓰기</Write>
-        </SmallWrapper>
-      </Wrapper>
-      <MenuContainer>
-        <Menu>
-          {MenuList.map((list, idx) => (
-            <MenuItem
-              to={list.path}
-              key={idx}
-              id={list.id}
-              onClick={handleTab}
-              choosetab={parseInt(isTab) === list.id}
-            >
-              {list.name}
-            </MenuItem>
-          ))}
-        </Menu>
-      </MenuContainer>
-      {isOpen ? (
-        <Login
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          getInfo={getToken}
-          getToken={getToken}
-          setGetInfo={setGetInfo}
-          setGetToken={setGetToken}
-        />
-      ) : (
-        ''
-      )}
-    </Container>
+        </Container>
+      ) : null}
+    </>
   );
 }
 
@@ -196,7 +203,7 @@ const MenuItem = styled(Link)`
   font-weight: 700;
   font-size: 16px;
   color: #424242;
-  border-bottom: 4px solid ${props => (props.choosetab ? ' #3fc5f0' : 'none')};
+  border-bottom: 4px solid ${props => (props.chooseTab ? ' #3fc5f0' : 'none')};
 
   &:hover {
     color: #3fc5f0;
