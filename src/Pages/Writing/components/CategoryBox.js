@@ -74,6 +74,10 @@ function CategoryBox({
               {colorPick.back_color === '' ? null : '배경 - '}
               {selectInput.back_color}
             </Category>
+
+            <SelectedBackColor
+              selected={colorPick.back_color}
+            ></SelectedBackColor>
             {colorPick.back_color === '' ? (
               <i className="fas fa-sort-down" />
             ) : null}
@@ -91,9 +95,6 @@ function CategoryBox({
                   {color.name}
                   <PreviewColor preview={color.color}></PreviewColor>
                 </ColorBtn>
-                <SelectedBackColor
-                  selected={colorPick.back_color}
-                ></SelectedBackColor>
               </div>
             ))}
           </DropList>
@@ -104,6 +105,10 @@ function CategoryBox({
               {colorPick.item_color === '' ? null : '소품 - '}
               {selectInput.item_color}
             </Category>
+
+            <SelectedItemColor
+              selected={colorPick.item_color}
+            ></SelectedItemColor>
             {colorPick.item_color === '' ? (
               <i className="fas fa-sort-down" />
             ) : null}
@@ -121,9 +126,6 @@ function CategoryBox({
                   {color.name}
                   <PreviewColor preview={color.color}></PreviewColor>
                 </ColorBtn>
-                <SelectedItemColor
-                  selected={colorPick.item_color}
-                ></SelectedItemColor>
               </div>
             ))}
           </DropList>
@@ -156,6 +158,9 @@ const LowWrapper = styled.div`
 `;
 
 const CategroyName = styled.button`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   position: relative;
   width: 150px;
   height: 40px;
@@ -199,6 +204,7 @@ const HouseBtn = styled.button`
   border-top: none;
   background-color: #fff;
   color: #424242;
+
   &:hover {
     background-color: #dbdbdb;
   }
@@ -220,15 +226,13 @@ const ColorBtn = styled.button`
   }
 `;
 const SelectedBackColor = styled.div`
-  position: absolute;
-  top: -30px;
-  left: 172px;
   width: 40px;
   height: 20px;
   border-radius: 4px;
   border: ${props =>
     props.selected === 'rgb(255,255,255)' ? '1px solid #ededed' : 'none'};
   background-color: ${props => props.selected};
+  z-index: 1;
 `;
 
 const SelectedItemColor = styled(SelectedBackColor)``;

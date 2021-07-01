@@ -51,6 +51,11 @@ function Writing() {
     setIsChanged(isChanged);
   };
 
+  const deleteImg = () => {
+    setImgFile('');
+    setPreviewUrl('');
+  };
+
   const showImg = e => {
     e.preventDefault();
     let reader = new FileReader();
@@ -102,14 +107,13 @@ function Writing() {
       fetch('http://10.58.4.129:8000/postings', {
         method: 'post',
         headers: {
-          Authorization:
-            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjJ9.W0grRe41iPCBjg0AB4vIgyClD0YmHuU9HWhBRW7k_Vc',
+          Authorization: localStorage.getItem('access_token'),
         },
         body: fileData,
       }).then(res => {
-        if (res.status !== 201) return alert('항목을 모두 입력해주세요');
+        if (res.status !== 201) return alert('업로드 실패!');
         alert('게시물이 업로드 되었습니다.');
-        history.push('/');
+        history.push('/postings');
       });
     }
   };
@@ -118,7 +122,7 @@ function Writing() {
     <Container>
       <HeaderBox>
         <Header>
-          <Link to={'/'}>
+          <Link to={'/postings'}>
             <Logo alt="로고" src="/Images/오늘의집 로고.png"></Logo>
           </Link>
           <Submit onClick={handleSubmit}>올리기</Submit>
@@ -147,6 +151,7 @@ function Writing() {
             showImg={showImg}
             previewUrl={previewUrl}
             imgFile={imgFile}
+            deleteImg={deleteImg}
           />
         </Main>
         <Aside>

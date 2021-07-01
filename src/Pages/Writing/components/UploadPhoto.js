@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function UploadPhoto({ showImg, previewUrl, imgFile }) {
+function UploadPhoto({ showImg, previewUrl, deleteImg }) {
   return (
     <PhotoBox>
       <InputLable htmlFor="uploadbutton" isfile={previewUrl !== ''}>
@@ -15,7 +15,18 @@ function UploadPhoto({ showImg, previewUrl, imgFile }) {
         accept="image/jpg,image/png,image/jpeg,image/gif"
         onChange={showImg}
       />
-      {previewUrl && <ViewImg alt="업로드이미지" src={previewUrl} />}
+      {previewUrl && (
+        <>
+          <ViewImg
+            onClick={deleteImg}
+            alt="업로드이미지"
+            src={previewUrl}
+          ></ViewImg>
+          <DeleteBtn>
+            <i class="fas fa-trash-alt"></i>
+          </DeleteBtn>
+        </>
+      )}
     </PhotoBox>
   );
 }
@@ -65,10 +76,25 @@ const PhotoInput = styled.input`
 `;
 
 const ViewImg = styled.img`
-  position: absolute;
   width: 500px;
   margin-top: 70px;
   border-radius: 10px;
+  z-index: 2;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.4;
+  }
+`;
+const DeleteBtn = styled.button`
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  font-size: 100px;
   z-index: 1;
+
+  &:hover {
+    z-index: 3;
+  }
 `;
 export default UploadPhoto;
