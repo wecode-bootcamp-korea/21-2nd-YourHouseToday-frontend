@@ -7,6 +7,7 @@ function Mypage() {
   const [active, SetActive] = useState(0);
   const [trendList, setTrendList] = useState([]);
   const [myPhoto, setMyPhoto] = useState([]);
+  const [heartCount, setHeartCount] = useState();
 
   useEffect(() => {
     fetch('/data/Mypage/mypage.json')
