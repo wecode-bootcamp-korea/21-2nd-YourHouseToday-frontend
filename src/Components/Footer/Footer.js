@@ -60,8 +60,6 @@ class Footer extends React.Component {
 }
 
 const Container = styled.footer`
-  position: absolute;
-  bottom: 0;
   width: 100vw;
   height: 281px;
   padding: 30px 320px 40px;

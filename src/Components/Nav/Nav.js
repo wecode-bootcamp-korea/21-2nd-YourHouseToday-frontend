@@ -10,6 +10,7 @@ function Nav() {
     localStorage.getItem('access_token')
   );
   const [isClicked, setIsClicked] = useState(false);
+  const [isTab, setIsTab] = useState(0);
   const location = useLocation();
 
   useEffect(() => {
@@ -19,6 +20,10 @@ function Nav() {
 
   const handleLogin = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleTab = e => {
+    setIsTab(e.target.id);
   };
 
   const handleList = () => {
@@ -82,7 +87,15 @@ function Nav() {
       <MenuContainer>
         <Menu>
           {MenuList.map((list, idx) => (
-            <MenuItem key={idx}>{list.name}</MenuItem>
+            <MenuItem
+              to={list.path}
+              key={idx}
+              id={list.id}
+              onClick={handleTab}
+              choosetab={parseInt(isTab) === list.id}
+            >
+              {list.name}
+            </MenuItem>
           ))}
         </Menu>
       </MenuContainer>
@@ -108,6 +121,7 @@ const Container = styled.div`
   align-items: center;
   position: fixed;
   top: 0;
+  background-color: #fff;
 `;
 
 const Wrapper = styled.nav`
@@ -175,10 +189,14 @@ const MenuContainer = styled.div`
   border-bottom: 1px solid #ededed;
 `;
 
-const MenuItem = styled.span`
+const MenuItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  height: 50px;
   font-weight: 700;
   font-size: 16px;
   color: #424242;
+  border-bottom: 4px solid ${props => (props.choosetab ? ' #3fc5f0' : 'none')};
 
   &:hover {
     color: #3fc5f0;
@@ -404,14 +422,14 @@ const Write = styled.button`
 `;
 
 const MenuList = [
-  { name: '홈', path: '/' },
-  { name: '팔로잉', path: '/' },
-  { name: '사진', path: '/' },
-  { name: '집들이', path: '/' },
-  { name: '노하우', path: '/' },
-  { name: '전문가집들이', path: '/' },
-  { name: '셀프가이드', path: '/' },
-  { name: '질문과답변', path: '/' },
+  { id: 0, name: '홈', path: '/' },
+  { id: 1, name: '팔로잉', path: '/' },
+  { id: 2, name: '사진', path: '/' },
+  { id: 3, name: '집들이', path: '/writing' },
+  { id: 4, name: '노하우', path: '/' },
+  { id: 5, name: '전문가집들이', path: '/' },
+  { id: 6, name: '셀프가이드', path: '/' },
+  { id: 7, name: '질문과답변', path: '/' },
 ];
 
 export default Nav;
