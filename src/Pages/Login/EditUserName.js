@@ -75,7 +75,7 @@ function EditUserName() {
       .then(res => {
         localStorage.setItem('user-info', JSON.stringify(res));
         localStorage.setItem('access_token', res.self_token);
-        history.push('/');
+        history.push('/postings');
       });
   };
 
