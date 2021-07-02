@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CategoryBox from './components/CategoryBox';
 import UploadPhoto from './components/UploadPhoto';
 import { Link, useHistory } from 'react-router-dom';
+import { API } from '../../config';
 
 function Writing() {
   const [isDroped, setIsDroped] = useState('');
@@ -104,7 +105,7 @@ function Writing() {
       const fileData = new FormData();
       fileData.append('image', imgFile);
       fileData.append('info', JSON.stringify(sendObject));
-      fetch('http://10.58.7.41:8000/postings', {
+      fetch(`${API}/postings`, {
         method: 'post',
         headers: {
           Authorization: localStorage.getItem('access_token'),
