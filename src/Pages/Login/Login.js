@@ -8,7 +8,6 @@ function Login({ isOpen, setIsOpen, setGetInfo, setGetToken }) {
   const loginModal = useRef(null);
 
   const loginWithKakao = () => {
-    window.Kakao.init(process.env.REACT_APP_JS_KEY);
     setIsOpen(false);
     window.Kakao.Auth.login({
       success: auth => {
@@ -82,7 +81,7 @@ const Modal = styled.div`
   display: ${props => (props.isDisplay ? 'block' : 'none')};
   position: relative;
   top: -40px;
-  left: 358px;
+  left: 22%;
   width: 400px;
   height: 450px;
   background: #fff;

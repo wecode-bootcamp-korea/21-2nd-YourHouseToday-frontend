@@ -13,8 +13,12 @@ function Nav() {
   const [isTab, setIsTab] = useState(0);
   const location = useLocation();
 
+  if (!window.Kakao.isInitialized()) {
+    window.Kakao.init(process.env.REACT_APP_JS_KEY);
+  }
+
   useEffect(() => {
-    if (location.pathname === '/')
+    if (location.pathname === '/postings')
       setGetInfo(JSON.parse(localStorage.getItem('user-info')));
   }, [location.pathname]);
 
@@ -45,7 +49,7 @@ function Nav() {
       {location.pathname !== '/writing' ? (
         <Container>
           <Wrapper>
-            <Link to={'/'}>
+            <Link to={'/postings'}>
               <Logo alt="로고" src="Images/Logo/오늘의집 로고.png" />
             </Link>
             <Catagory>
@@ -78,7 +82,7 @@ function Nav() {
                         src={getInfo.profile_image}
                       />
                       <PageList isDisplay={isClicked}>
-                        <MyPage>마이페이지</MyPage>
+                        <MyPage to={'/mypage'}>마이페이지</MyPage>
                         <LogOut onClick={logoutWithKakao}>로그아웃</LogOut>
                       </PageList>
                     </div>
@@ -86,7 +90,9 @@ function Nav() {
                   </ProfileBox>
                 </>
               )}
-              <Write>글쓰기</Write>
+              <Write>
+                <Link to={'/writing'}>글쓰기</Link>
+              </Write>
             </SmallWrapper>
           </Wrapper>
           <MenuContainer>
@@ -128,7 +134,7 @@ const Container = styled.div`
   align-items: center;
   position: fixed;
   top: 0;
-  background-color: #fff;
+  z-index: 1000;
 `;
 
 const Wrapper = styled.nav`
@@ -139,6 +145,7 @@ const Wrapper = styled.nav`
   height: 80px;
   padding: 0 320px;
   border-bottom: 1px solid #ededed;
+  background-color: #fff;
 `;
 
 const Logo = styled.img`
@@ -194,6 +201,7 @@ const MenuContainer = styled.div`
   height: 50px;
   padding: 0 320px;
   border-bottom: 1px solid #ededed;
+  background-color: #fff;
 `;
 
 const MenuItem = styled(Link)`
@@ -222,6 +230,7 @@ const SmallWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 520px;
+  background-color: #fff;
 `;
 
 const InputBox = styled.div`
@@ -350,7 +359,8 @@ const ButtonBox = styled.div`
 `;
 
 const PageList = styled.aside`
-  display: ${props => (props.isDisplay ? 'block' : 'none')};
+  display: ${props => (props.isDisplay ? 'flex' : 'none')};
+  flex-direction: column;
   position: absolute;
   top: 57px;
   left: -57px;
@@ -360,7 +370,6 @@ const PageList = styled.aside`
   background: #fff;
   border-radius: 0.4em;
   border: 1px solid #ebebeb;
-  box-shadow: 5px 5px 5px 5px #ededed;
   z-index: 1;
 
   &:before {
@@ -392,8 +401,9 @@ const PageList = styled.aside`
   }
 `;
 
-const MyPage = styled.p`
+const MyPage = styled(Link)`
   padding: 10px 14px 11px;
+  border-bottom: 1px solid #ededed;
   font-weight: 400;
   font-size: 15px;
   color: #424242;
@@ -419,9 +429,12 @@ const Write = styled.button`
   height: 40px;
   border-radius: 12px;
   background-color: #3fc5f0;
-  font-weight: 700;
-  font-size: 16px;
-  color: #fff;
+
+  a {
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+  }
 
   &:hover {
     transform: translateY(-1.5px);
@@ -429,14 +442,14 @@ const Write = styled.button`
 `;
 
 const MenuList = [
-  { id: 0, name: '홈', path: '/' },
-  { id: 1, name: '팔로잉', path: '/' },
-  { id: 2, name: '사진', path: '/' },
-  { id: 3, name: '집들이', path: '/writing' },
-  { id: 4, name: '노하우', path: '/' },
-  { id: 5, name: '전문가집들이', path: '/' },
-  { id: 6, name: '셀프가이드', path: '/' },
-  { id: 7, name: '질문과답변', path: '/' },
+  { id: 0, name: '홈', path: '/postings' },
+  { id: 1, name: '팔로잉', path: '/postings' },
+  { id: 2, name: '사진', path: '/postings' },
+  { id: 3, name: '집들이', path: '/postings' },
+  { id: 4, name: '노하우', path: '/postings' },
+  { id: 5, name: '전문가집들이', path: '/postings' },
+  { id: 6, name: '셀프가이드', path: '/postings' },
+  { id: 7, name: '질문과답변', path: '/postings' },
 ];
 
 export default Nav;
