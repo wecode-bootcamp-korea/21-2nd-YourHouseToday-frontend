@@ -36,15 +36,13 @@ function Feeds(props) {
       ? fetch(`${API}/postings/like/${id}`, {
           method: 'delete',
           headers: {
-            Authorization:
-              'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjJ9.W0grRe41iPCBjg0AB4vIgyClD0YmHuU9HWhBRW7k_Vc',
+            Authorization: localStorage.access_token,
           },
         }).then(response => response)
       : fetch(`${API}/postings/like/${id}`, {
           method: 'post',
           headers: {
-            Authorization:
-              'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjJ9.W0grRe41iPCBjg0AB4vIgyClD0YmHuU9HWhBRW7k_Vc',
+            Authorization: localStorage.access_token,
           },
         }).then(response => response);
   }

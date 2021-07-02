@@ -104,7 +104,7 @@ function Writing() {
       const fileData = new FormData();
       fileData.append('image', imgFile);
       fileData.append('info', JSON.stringify(sendObject));
-      fetch('http://13.125.156.74/postings', {
+      fetch('http://10.58.7.41:8000/postings', {
         method: 'post',
         headers: {
           Authorization: localStorage.getItem('access_token'),
