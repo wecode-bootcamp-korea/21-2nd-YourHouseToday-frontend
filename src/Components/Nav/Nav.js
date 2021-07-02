@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import Login from '../../Pages/Login/Login';
 import styled from 'styled-components';
 
@@ -12,14 +12,15 @@ function Nav() {
   const [isClicked, setIsClicked] = useState(false);
   const [isTab, setIsTab] = useState(0);
   const location = useLocation();
+  const history = useHistory();
 
   if (!window.Kakao.isInitialized()) {
     window.Kakao.init(process.env.REACT_APP_JS_KEY);
   }
 
   useEffect(() => {
-    if (location.pathname === '/postings')
-      setGetInfo(JSON.parse(localStorage.getItem('user-info')));
+    // if (location.pathname === '/postings')
+    setGetInfo(JSON.parse(localStorage.getItem('user-info')));
   }, [location.pathname]);
 
   const handleLogin = () => {
@@ -40,6 +41,7 @@ function Nav() {
         localStorage.clear();
         setGetToken('');
         setGetInfo('');
+        history.push('/postings');
       });
     }
   };

@@ -5,6 +5,7 @@ import MyPageData from './MyPageData';
 import EmptyBox from './EmptyBox';
 import { MYPAGE_API } from '../../config';
 import { API } from '../../config';
+import Loding from '../../Components/Loading/Loding';
 
 function Mypage() {
   const [active, SetActive] = useState(0);
@@ -15,8 +16,7 @@ function Mypage() {
   useEffect(() => {
     fetch(`${MYPAGE_API}/users`, {
       headers: {
-        Authorization:
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjB9.RXXztQzxhXFcuLGwNMrUngSdeMR8NW5851YMbNBs8jo',
+        Authorization: localStorage.access_token,
       },
     })
       .then(response => response.json())
@@ -43,9 +43,8 @@ function Mypage() {
     { id: 3, name: '내쿠폰', count: 10, url: 'images/MyPage/tickets.png' },
   ];
 
-  console.log(myPhoto);
-
-  if (loading) return <div>Loading...</div>;
+  console.log(JSON.parse(localStorage.getItem('user-info')).profile_image);
+  if (loading) return <Loding />;
   return (
     <>
       <UserShowLayOut>
@@ -174,7 +173,7 @@ function Mypage() {
                       );
                     })}
                   </PostCardList>
-                  <PostUploadBtn>
+                  <PostUploadBtn to={'/writing'}>
                     <UploadIcon src="images/MyPage/plus.png" />
                     사진 올리기
                   </PostUploadBtn>
@@ -192,7 +191,7 @@ function Mypage() {
                       );
                     })}
                   </PostCardList>
-                  <PostUploadBtn>
+                  <PostUploadBtn to={'/postings'}>
                     전체 보기
                     <MoreIcon src="images/MyPage/right-arrow.png" />
                   </PostUploadBtn>
@@ -314,7 +313,7 @@ const WrapProfile = styled.div`
 
 const StikyContainer = styled.div`
   position: sticky;
-  top: 81px;
+  top: 129px;
 `;
 
 const StikyChild = styled.div`
@@ -366,7 +365,7 @@ const ProfileImageContent = styled.div`
 `;
 
 const ProfileImage = styled.img.attrs({
-  src: 'https://image.ohou.se/i/bucketplace-v2-development/uploads/default_images/avatar.png?gif=1&w=144&h=144&c=c',
+  src: `${JSON.parse(localStorage.getItem('user-info')).profile_image}`,
 })`
   width: 100%;
   height: 100%;
@@ -629,11 +628,12 @@ const CardImage = styled.img`
   left: 50%;
   top: 50%;
   width: 100%;
+  height: 100%;
   border-radius: 6px;
   transform: translate(-50%, -50%);
 `;
 
-const PostUploadBtn = styled.a`
+const PostUploadBtn = styled(Link)`
   display: inline-block;
   margin-top: 30px;
   padding: 21px 0;

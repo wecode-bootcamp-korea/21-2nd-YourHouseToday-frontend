@@ -5,7 +5,7 @@ import HomeHead from './Head/HomeHead';
 import FilterBar from './Filter/FilterBar';
 import Feeds from './Feeds';
 import { API } from '../../config';
-import Loading from './Loading/Loding';
+import Loading from '../../Components/Loading/Loding';
 
 function Main(props) {
   const [loading, setLoading] = useState(true);
@@ -102,12 +102,12 @@ function Main(props) {
   useEffect(() => {
     const query = makeQueryString([...selectedList]);
 
-    fetch(`${API}/postings?offset=${infinite}&limit=8?${query}`)
+    fetch(`${API}/postings?offset=${infinite}&limit=8${query}`)
       .then(response => response.json())
       .then(data => {
         setFeedData(data.result);
       });
-    props.history.push(`/postings?${query}`);
+    props.history.push(`/postings?offset=${infinite}&limit=8?${query}`);
   }, [selectedList]);
 
   function deleteFilter(tapId) {
@@ -120,10 +120,8 @@ function Main(props) {
 
   useEffect(() => {
     fetch(`${API}/postings?offset=${infinite}&limit=8`)
-      // fetch('Data/Main/main.json')
       .then(response => response.json())
       .then(res => {
-        console.log(res);
         const resultdata = res.result;
         setFeedData([...feedData, ...resultdata]);
         setLoading(false);
@@ -174,8 +172,7 @@ function Main(props) {
       <CardWrap>
         {feedData.length === 0 ? (
           <Empty>
-            <Img />
-            앗! 찾으시는 결과가 없네요~~~
+            <Img alt="결과없음" src="/Images/Main/search.jpg" />
           </Empty>
         ) : (
           feedData.map((el, index) => {
@@ -212,6 +209,4 @@ const Empty = styled.div`
   font-size: 17px;
 `;
 
-const Img = styled.img`
-  width: 100px;
-`;
+const Img = styled.img``;
