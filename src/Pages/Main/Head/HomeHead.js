@@ -77,8 +77,7 @@ export default HomeHead;
 const Container = styled.section`
   padding: 30px 0 0;
   width: 1136px;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 130px auto 0;
   max-width: 100%;
 `;
 

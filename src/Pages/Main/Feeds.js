@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { API } from '../../config';
 
@@ -56,7 +55,7 @@ function Feeds(props) {
         <CardItemHead>
           <address>
             <Head>
-              <WriteLink to={`/ProdDetail/${id}`}>
+              <WriteLink to={`/FeedDetail/${id}`}>
                 <ProfileImage src={profileImage} />
                 <ProfileName>{profileName}</ProfileName>
               </WriteLink>
@@ -67,7 +66,7 @@ function Feeds(props) {
         </CardItemHead>
         <CardItemBody>
           <ContentLink
-            to={`/ProdDetail/${id}`}
+            to={`/FeedDetail/${id}`}
             onMouseOver={() => handleToggle()}
             onMouseOut={() => handleToggle()}
           />
@@ -87,7 +86,7 @@ function Feeds(props) {
               />
               <Count>{likeCount}</Count>
             </HeartWrap>
-            <CommentCountWrap to={`/ProdDetail/${id}`}>
+            <CommentCountWrap to={`/FeedDetail/${id}`}>
               <CommentImg />
               <Count>{commentCount}</Count>
             </CommentCountWrap>
@@ -96,14 +95,14 @@ function Feeds(props) {
         <CommentWrap>
           <CardComment>
             <CommentWriter>
-              <WriterLink to={`/ProdDetail/${id}`}>
+              <WriterLink to={`/FeedDetail/${id}`}>
                 <WriterImageBox display={writerImage ? 'block' : 'none'}>
                   <WriterImage src={writerImage} />
                 </WriterImageBox>
                 <WriterName>{writerName}</WriterName>
               </WriterLink>
             </CommentWriter>
-            <CommentLink to={`/ProdDetail/${id}`}>
+            <CommentLink to={`/FeedDetail/${id}`}>
               <CommentContent>{commentContent}</CommentContent>
             </CommentLink>
           </CardComment>

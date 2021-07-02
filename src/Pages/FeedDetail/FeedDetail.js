@@ -8,6 +8,7 @@ import Feeds from './Feeds';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import qs from 'qs';
+import { API } from '../../config';
 
 const createDate = () => {
   const today = new Date();
@@ -47,7 +48,6 @@ function FeedDetail() {
   const history = useHistory();
   const match = useRouteMatch();
   const feedId = match.params.id;
-  console.log(match);
 
   const formOpen = id => {
     setEdittingCommentBoxId(id);
@@ -58,8 +58,6 @@ function FeedDetail() {
   };
 
   const LIMIT = 5;
-
-  const API = 'http://10.58.7.179:8000';
 
   const infiniteScroll = () => {
     let scrollHeight = Math.max(
@@ -81,7 +79,6 @@ function FeedDetail() {
     fetch(`${API}/postings/${feedId}`)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         setFeedData(res);
       });
   }, []);
@@ -93,6 +90,7 @@ function FeedDetail() {
     })
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setCommentLists(data);
         setEditComment(data.userComment);
         setIsLoggedIn(true);
@@ -161,7 +159,6 @@ function FeedDetail() {
   const handleClickBtn = id => {
     const query = `?limit=${LIMIT}&offset=${id * LIMIT}`;
     history.push(`/feedDetail${query}`);
-    console.log(query);
   };
 
   const addEditComment = (contents, id) => {
@@ -209,14 +206,12 @@ function FeedDetail() {
       related_user,
     },
   } = feedData;
-  console.log(location.search);
 
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(commentLists.length / 5); i++) {
     pageNumbers.push(i);
   }
 
-  console.log(pageNumbers);
   const currentCommentPage = location.search
     ? qs.parse(location.search.slice(1)).offset / 5
     : 1;
@@ -258,7 +253,9 @@ function FeedDetail() {
                   조회 {feedData.view?.toLocaleString()}
                 </span>
                 <span class="bullit">{'・'}</span>
-                <span className="commentCount">댓글 {commentLists.length}</span>
+                <span className="commentCount">
+                  댓글 {commentLists?.length}
+                </span>
                 <span class="bullit">{'・'}</span>
                 <span classname="shareCount">공유 18</span>
                 <span class="bullit">{'・'}</span>
@@ -268,7 +265,7 @@ function FeedDetail() {
               <CommentWrap>
                 <CommentContainer>
                   <CountComment>
-                    댓글 <span> {commentLists.length} </span>
+                    댓글 <span> {commentLists?.length} </span>
                   </CountComment>
                   <LoginComment>
                     <img
@@ -292,7 +289,7 @@ function FeedDetail() {
                   </LoginComment>
                   <CommentList>
                     <CommentUl>
-                      {commentLists.map(comment => (
+                      {commentLists?.map(comment => (
                         <CommentBox
                           id={comment.id}
                           comment={comment}
