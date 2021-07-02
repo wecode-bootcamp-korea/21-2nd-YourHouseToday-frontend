@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useParams,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Main from './Pages/Main/Main';
 import Writing from './Pages/Writing/Writing';
 import FeedDetail from './Pages/FeedDetail/FeedDetail';
@@ -23,8 +18,8 @@ class Routes extends React.Component {
         <Switch>
           <Route exact path="/postings" component={Main} />
           <Route exact path="/writing" component={Writing} />
-          <Route exact path="/FeedDetail" component={FeedDetail} />
-          <Route exact path="/FeedDetail/:id" component={FeedDetail} />
+          <Route exact path="/feedDetail" component={FeedDetail} />
+          <Route exact path="/feedDetail/:id" component={FeedDetail} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/editusername" component={EditUserName} />
           <Route exact path="/signup" component={Signup} />

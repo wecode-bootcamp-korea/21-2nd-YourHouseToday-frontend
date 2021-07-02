@@ -11,9 +11,9 @@ const Feeds = ({ feedsList }) => {
         feedsList.map(feed => (
           <FeedsWrap>
             <img
-              onClick={() => history.push(`FeedDetail/${feed.id}`)}
+              onClick={() => history.push(`/feedDetail/${feed.id}`)}
               alt="contents"
-              src={feed.img}
+              src={feed.cardImage}
             />
           </FeedsWrap>
         ))}

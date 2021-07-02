@@ -1,14 +1,13 @@
-// import React, { useState,useEffect } from 'react';
-import React, { useState, useEffect, useParams } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import CommentBox from './CommentBox';
 import Content from './Content';
 import Feeds from './Feeds';
+import { API } from '../../config';
 import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import qs from 'qs';
-import { API } from '../../config';
 
 const createDate = () => {
   const today = new Date();
@@ -43,6 +42,7 @@ function FeedDetail() {
   const [likeBtn, setLikeBtn] = useState(false);
   const [feedsList, setFeedsList] = useState([]);
   const [items, setItems] = useState(10);
+  const [infinite, setInfinite] = useState(1);
 
   let location = useLocation();
   const history = useHistory();
@@ -71,7 +71,8 @@ function FeedDetail() {
     let clientHeight = document.documentElement.clientHeight;
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      setItems(items + 10);
+      setItems(items + 8);
+      setInfinite(infinite + 1);
     }
   };
 
@@ -85,8 +86,8 @@ function FeedDetail() {
   // http://10.58.7.179:8000/postings/1
 
   useEffect(() => {
-    fetch(`${API}/comments/${feedId}`, {
-      method: 'POST',
+    fetch(`${API}/comments?posting_id=${feedId}`, {
+      method: 'GET',
     })
       .then(res => res.json())
       .then(data => {
@@ -99,56 +100,65 @@ function FeedDetail() {
     window.addEventListener('scroll', infiniteScroll, true);
   }, []);
 
-  useEffect(() => {
-    fetch(`${API}/comments/${feedId}`, {
-      method: 'GET',
-    })
-      .then(res => res.json())
-      .then(res => {
-        setCommentLists(res);
-        setEditComment(res.userComment);
-      });
-  }, [location]);
+  // useEffect(() => {
+  //   fetch(`${API}/comments?posting_id=${feedId}`, {
+  //     method: 'GET',
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data);
+  //     });
+  // }, [location]);
 
   useEffect(() => {
-    fetch('Data/FeedDetail/FeedMockData.json', {
+    fetch(`${API}/postings`, {
       method: 'GET',
     })
       .then(res => res.json())
       .then(res => {
-        let result = res.slice(0, items);
+        console.log(res);
+        let result = res.result.slice(0, items);
         setFeedsList([...feedsList, ...result]);
       });
+    history.push(`/feedDetail/${feedId}?offset=${infinite}&limit=8`);
   }, [items]);
 
-  // useEffect(() => {}, []);
+  const handleClickLike = () => {
+    if (!localStorage.getItem('token')) {
+      alert('로그인 후 사용이 가능합니다.');
+      history.push('/login');
+      return;
+    }
 
-  // handleLike = () => {
-  //   if (localStorage.getItem('token')) {
-  //     fetch(`${API}/like`, {
-  //       method: 'POST',
-  //       headers: {
-  //         Authorization: localStorage.getItem('token'),
-  //       },
-  //       body: JSON.stringify({
-  //         useriId: id,
-  //         userProfileImg: profileImg,
-  //         date: createDate(),
-  //       }),
-  //     })
-  //       .then(response => response.json())
-  //       .then(result => {
-  //         if (result.message === 'SUCCESS') {
-  //           alert('찜하기 성공.');
-  //         } else {
-  //           alert('찜하기 실패');
-  //         }
-  //       });
-  //   } else {
-  //     alert('로그인 후 사용이 가능합니다.');
-  //     this.props.history.push('/login');
-  //   }
-  // };
+    if (!likeBtn) {
+      fetch(`${API}/postings/like/${feedId}`, {
+        method: 'POST',
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+        body: JSON.stringify({
+          user_id: commentLists.userId,
+          posting_id: feedData.profileId,
+        }),
+      })
+        .then(response => response.json())
+        .then(result => {
+          if (result.message === 'SUCCESS') {
+            alert('찜하기 성공.');
+          } else {
+            alert('찜하기 실패');
+          }
+        });
+      setLikeBtn(true);
+    } else {
+      fetch(`/Data/FeedDetail/mockData.json`, {
+        method: 'delete',
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      }).then(response => response);
+    }
+  };
 
   const handleKeyPress = e => {
     if (e.key === 'Enter') {
@@ -178,19 +188,19 @@ function FeedDetail() {
   };
 
   const addComment = () => {
-    setCommentLists([
-      {
-        userId: 'blackCow',
-        userComment: comment,
-        Date: createDate(),
-      },
-      ...commentLists,
-    ]);
-    setComment('');
-  };
-
-  const handleLikeBtn = e => {
-    setLikeBtn(!likeBtn);
+    if (isLoggedIn) {
+      setCommentLists([
+        {
+          userId: 'blackCow',
+          userComment: comment,
+          Date: createDate(),
+        },
+        ...commentLists,
+      ]);
+      setComment('');
+    } else {
+      alert('로그인 후 사용이 가능합니다.');
+    }
   };
 
   if (!feedData) return <>loading</>;
@@ -215,8 +225,7 @@ function FeedDetail() {
   const currentCommentPage = location.search
     ? qs.parse(location.search.slice(1)).offset / 5
     : 1;
-
-  console.log(commentLists);
+  console.log(feedData);
   return (
     <>
       <Container>
@@ -249,9 +258,7 @@ function FeedDetail() {
               </div>
 
               <CountWrap>
-                <span className="viewCount">
-                  조회 {feedData.view?.toLocaleString()}
-                </span>
+                <span className="viewCount">조회 {view?.toLocaleString()}</span>
                 <span class="bullit">{'・'}</span>
                 <span className="commentCount">
                   댓글 {commentLists?.length}
@@ -294,7 +301,6 @@ function FeedDetail() {
                           id={comment.id}
                           comment={comment}
                           createDate={createDate}
-                          key={comment.id}
                           editComment={editComment}
                           addEditComment={addEditComment}
                           formOpen={formOpen}
@@ -325,7 +331,7 @@ function FeedDetail() {
           </Article>
           <Aside>
             <AsideContainer>
-              <LikeBtn onClick={() => handleLikeBtn()}>
+              <LikeBtn onClick={() => handleClickLike()}>
                 {likeBtn === true ? (
                   <>
                     <img
@@ -347,11 +353,11 @@ function FeedDetail() {
 
               <UserProfile>
                 <ProfileImg>
-                  <img src={related_user[0]?.image_url} alt="userProfile"></img>
+                  <img src={related_user[0].image_url} alt="userProfile"></img>
                 </ProfileImg>
                 <ProfileInfo>
                   <span className="id">{related_user[0].nickname}</span>
-                  <span>{related_user[0]?.introduction}</span>
+                  <span>{related_user[0].introduction}</span>
                 </ProfileInfo>
               </UserProfile>
             </AsideContainer>
@@ -375,6 +381,7 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+  margin-top: 200px;
 `;
 
 const Section = styled.div`

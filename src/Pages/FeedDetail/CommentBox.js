@@ -19,17 +19,13 @@ const CommentBox = ({
     addEditComment(e.target.value, id);
   };
 
-  const handleDate = date => {
-    createDate(date);
+  const handleDate = data => {
+    createDate(data);
   };
 
   const handleOnRemove = () => {
     onRemove(id);
   };
-
-  // const handleOnRemove = () => {
-  //   ;
-  // };
 
   return (
     <>
@@ -39,13 +35,13 @@ const CommentBox = ({
           <div className="commentContents">
             {edittingCommentBoxId !== comment.id ? (
               <CommentTop>
-                <span className="commentUserId">{comment.userId}</span>
+                <span className="commentUserId">{comment.user_nickname}</span>
 
-                <span className="commentText">{comment.userComment}</span>
+                <span className="commentText">{comment.text}</span>
               </CommentTop>
             ) : (
               <FormEdit onBlur={formClose}>
-                <span className="commentUserId">{comment.userId}</span>
+                <span className="commentUserId">{comment.user}</span>
 
                 <input value={newComment} onChange={e => handleEdit(e)}></input>
                 <CommentBtn comment={comment} onClick={formClose}>
@@ -55,7 +51,7 @@ const CommentBox = ({
             )}
             {edittingCommentBoxId !== comment.id ? (
               <CommentInfo>
-                <span className="commentDate">{handleDate(comment.date)}</span>
+                <span className="commentDate">{() => handleDate()}</span>
                 <span class="bullit">{'・'}</span>
                 <button>좋아요</button>
                 <span class="bullit">{'・'}</span>
