@@ -1,4 +1,4 @@
-const BASE_URL = 'http://13.125.156.74:8000';
+const BASE_URL = 'http://10.58.7.41:8000';
 
 export const GET_EDITINFO_API = `${BASE_URL}/users/nickname-check`;
 export const GET_SIGNIN_API = `${BASE_URL}/users/signin`;

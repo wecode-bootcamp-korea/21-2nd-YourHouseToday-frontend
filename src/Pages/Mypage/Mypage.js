@@ -1,34 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import MyPageData from './MyPageData';
 import EmptyBox from './EmptyBox';
+import { MYPAGE_API } from '../../config';
+import { API } from '../../config';
 
 function Mypage() {
   const [active, SetActive] = useState(0);
   const [trendList, setTrendList] = useState([]);
   const [myPhoto, setMyPhoto] = useState([]);
-  const [heartCount, setHeartCount] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/data/Mypage/mypage.json')
+    fetch(`${MYPAGE_API}/users`, {
+      headers: {
+        Authorization:
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MjB9.RXXztQzxhXFcuLGwNMrUngSdeMR8NW5851YMbNBs8jo',
+      },
+    })
       .then(response => response.json())
-      .then(data => {
-        setMyPhoto(data.result);
+      .then(res => {
+        setMyPhoto(res);
       });
 
-    fetch('/data/Mypage/main.json')
+    fetch(`${API}/postings`)
       .then(response => response.json())
       .then(data => {
         setTrendList(data.result);
+        setLoading(false);
       });
   }, []);
 
   const CUT_ITEM = [
     { id: 1, name: '스크랩북', count: 122, url: 'images/MyPage/ribbon.png' },
-    { id: 2, name: '좋아요', count: 1301, url: 'images/MyPage/heart.png' },
+    {
+      id: 2,
+      name: '좋아요',
+      count: myPhoto.likes,
+      url: 'images/MyPage/heart.png',
+    },
     { id: 3, name: '내쿠폰', count: 10, url: 'images/MyPage/tickets.png' },
   ];
 
+  console.log(myPhoto);
+
+  if (loading) return <div>Loading...</div>;
   return (
     <>
       <UserShowLayOut>
@@ -76,7 +93,7 @@ function Mypage() {
                       </ProfileImageContent>
                       <ProfileInfo>
                         <ProfileInfoName>
-                          <span>Rnanfsid</span>
+                          <span>{myPhoto?.user}</span>
                         </ProfileInfoName>
                         <ProfileInfoFollow>
                           <FollowText>
@@ -134,10 +151,10 @@ function Mypage() {
                 <PostCard>
                   <PostTitle>
                     사진
-                    <strong> {myPhoto.length}</strong>
+                    <strong> {myPhoto.postings?.length}</strong>
                   </PostTitle>
-                  <PostCardList margin={myPhoto.length === 0}>
-                    {myPhoto.length === 0 ? (
+                  <PostCardList margin={myPhoto.postings?.length === 0}>
+                    {myPhoto.postings?.length === 0 ? (
                       <PostUpload>
                         <UploadIcon src="images/MyPage/plus.png" />첫 번째
                         사진을 올려보세요
@@ -145,12 +162,12 @@ function Mypage() {
                     ) : (
                       <EmptyBox />
                     )}
-                    {myPhoto.map((item, index) => {
+                    {myPhoto.postings?.map((item, index) => {
                       return (
                         <React.Fragment key={index}>
                           <CardItem>
                             <CardImageWrap>
-                              <CardImage src={item.cardImage} />
+                              <CardImage src={item} />
                             </CardImageWrap>
                           </CardItem>
                         </React.Fragment>
@@ -614,15 +631,6 @@ const CardImage = styled.img`
   width: 100%;
   border-radius: 6px;
   transform: translate(-50%, -50%);
-`;
-
-const Empty = styled.div`
-  &:after {
-    display: block;
-    padding-top: 100%;
-    background-color: #f5f5f5;
-    content: '';
-  }
 `;
 
 const PostUploadBtn = styled.a`

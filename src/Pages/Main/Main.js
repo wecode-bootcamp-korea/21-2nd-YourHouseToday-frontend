@@ -5,6 +5,7 @@ import HomeHead from './Head/HomeHead';
 import FilterBar from './Filter/FilterBar';
 import Feeds from './Feeds';
 import { API } from '../../config';
+import Loading from './Loading/Loding';
 
 function Main(props) {
   const [loading, setLoading] = useState(true);
@@ -15,7 +16,7 @@ function Main(props) {
   const [colorToggle, setColorToggle] = useState('');
   const [selectedList, setSelectedList] = useState([]);
   const [items, setItems] = useState(8);
-  const [preItems, setPreItems] = useState(0);
+  const [infinite, setInfinite] = useState(1);
 
   function makeQueryString(event) {
     const sumString = event.reduce((prev, curr) => prev + `&${curr.query}`, '');
@@ -101,7 +102,7 @@ function Main(props) {
   useEffect(() => {
     const query = makeQueryString([...selectedList]);
 
-    fetch(`${API}/postings?${query}`)
+    fetch(`${API}/postings?offset=${infinite}&limit=8?${query}`)
       .then(response => response.json())
       .then(data => {
         setFeedData(data.result);
@@ -118,15 +119,17 @@ function Main(props) {
   }
 
   useEffect(() => {
-    fetch(`${API}/postings`)
+    fetch(`${API}/postings?offset=${infinite}&limit=8`)
+      // fetch('Data/Main/main.json')
       .then(response => response.json())
       .then(res => {
-        const resultdata = res.result.slice(preItems, items);
+        console.log(res);
+        const resultdata = res.result;
         setFeedData([...feedData, ...resultdata]);
         setLoading(false);
       });
     window.addEventListener('scroll', () => infiniteScroll());
-    props.history.push(`/postings`);
+    props.history.push(`/postings?offset=${infinite}&limit=8`);
     return () => {
       window.removeEventListener('scroll', () => infiniteScroll());
     };
@@ -143,12 +146,12 @@ function Main(props) {
     const clientHeight = documentElement.clientHeight;
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      setPreItems(items);
       setItems(items + 8);
+      setInfinite(infinite + 1);
     }
   }
 
-  // if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
   return (
     <>
       <HomeHead />
@@ -169,9 +172,16 @@ function Main(props) {
         clearFilter={clearFilter}
       />
       <CardWrap>
-        {feedData.map((el, index) => {
-          return <Feeds key={index} data={el} />;
-        })}
+        {feedData.length === 0 ? (
+          <Empty>
+            <Img />
+            앗! 찾으시는 결과가 없네요~~~
+          </Empty>
+        ) : (
+          feedData.map((el, index) => {
+            return <Feeds key={index} data={el} />;
+          })
+        )}
       </CardWrap>
     </>
   );
@@ -192,4 +202,16 @@ const CardWrap = styled.div`
   transform: translateY(0px);
   flex: 0 0 auto;
   flex-wrap: wrap;
+`;
+
+const Empty = styled.div`
+  margin: 0 auto;
+  padding: 190px 0;
+  color: #424242;
+  text-align: center;
+  font-size: 17px;
+`;
+
+const Img = styled.img`
+  width: 100px;
 `;
