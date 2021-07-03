@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import MyPageData from './MyPageData';
 import EmptyBox from './EmptyBox';
-import { MYPAGE_API } from '../../config';
 import { API } from '../../config';
 import Loding from '../../Components/Loading/Loding';
 
@@ -14,7 +13,7 @@ function Mypage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${MYPAGE_API}/users`, {
+    fetch(`${API}/users`, {
       headers: {
         Authorization: localStorage.access_token,
       },
@@ -88,7 +87,14 @@ function Mypage() {
                     </UserNameShare>
                     <UserNameContainer>
                       <ProfileImageContent>
-                        <ProfileImage />
+                        {localStorage.getItem('user-info') && (
+                          <ProfileImage
+                            src={`${
+                              JSON.parse(localStorage.getItem('user-info'))
+                                .profile_image
+                            }`}
+                          />
+                        )}
                       </ProfileImageContent>
                       <ProfileInfo>
                         <ProfileInfoName>
@@ -364,9 +370,7 @@ const ProfileImageContent = styled.div`
   overflow: hidden;
 `;
 
-const ProfileImage = styled.img.attrs({
-  src: `${JSON.parse(localStorage.getItem('user-info')).profile_image}`,
-})`
+const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
 `;

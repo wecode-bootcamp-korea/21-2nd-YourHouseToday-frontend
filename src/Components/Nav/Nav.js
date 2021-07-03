@@ -19,7 +19,6 @@ function Nav() {
   }
 
   useEffect(() => {
-    // if (location.pathname === '/postings')
     setGetInfo(JSON.parse(localStorage.getItem('user-info')));
   }, [location.pathname]);
 
@@ -52,7 +51,7 @@ function Nav() {
         <Container>
           <Wrapper>
             <Link to={'/postings'}>
-              <Logo alt="로고" src="Images/Logo/오늘의집 로고.png" />
+              <Logo alt="로고" src="Images/오늘의집 로고.png" />
             </Link>
             <Catagory>
               <span>커뮤니티</span>

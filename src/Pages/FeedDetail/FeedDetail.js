@@ -83,7 +83,6 @@ function FeedDetail() {
         setFeedData(res);
       });
   }, []);
-  // http://10.58.7.179:8000/postings/1
 
   useEffect(() => {
     fetch(`${API}/comments?posting_id=${feedId}`, {
@@ -91,8 +90,7 @@ function FeedDetail() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        setCommentLists(data);
+        // setCommentLists(data.comment);
         setEditComment(data.userComment);
         setIsLoggedIn(true);
       });
@@ -100,23 +98,12 @@ function FeedDetail() {
     window.addEventListener('scroll', infiniteScroll, true);
   }, []);
 
-  // useEffect(() => {
-  //   fetch(`${API}/comments?posting_id=${feedId}`, {
-  //     method: 'GET',
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //     });
-  // }, [location]);
-
   useEffect(() => {
     fetch(`${API}/postings`, {
       method: 'GET',
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         let result = res.result.slice(0, items);
         setFeedsList([...feedsList, ...result]);
       });
@@ -134,7 +121,7 @@ function FeedDetail() {
       fetch(`${API}/postings/like/${feedId}`, {
         method: 'POST',
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: localStorage.getItem('access_token'),
         },
         body: JSON.stringify({
           user_id: commentLists.userId,
@@ -154,7 +141,7 @@ function FeedDetail() {
       fetch(`/Data/FeedDetail/mockData.json`, {
         method: 'delete',
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: localStorage.getItem('access_token'),
         },
       }).then(response => response);
     }
@@ -188,10 +175,10 @@ function FeedDetail() {
   };
 
   const addComment = () => {
-    if (isLoggedIn) {
+    if (true) {
       setCommentLists([
         {
-          userId: 'blackCow',
+          userId: 'asss',
           userComment: comment,
           Date: createDate(),
         },
@@ -225,7 +212,7 @@ function FeedDetail() {
   const currentCommentPage = location.search
     ? qs.parse(location.search.slice(1)).offset / 5
     : 1;
-  console.log(feedData);
+
   return (
     <>
       <Container>
@@ -243,15 +230,15 @@ function FeedDetail() {
               <Content img={image} text={text} />
 
               <div className="buttonContainer">
-                <Link to={`main/feeds=${size}`} className="tagBtn">
+                <Link to={`postings?${size}`} className="tagBtn">
                   <span># </span>
                   {size}
                 </Link>
-                <Link to={`main/feeds=${style}`} className="tagBtn">
+                <Link to={`postings?${style}`} className="tagBtn">
                   <span># </span>
                   {style}
                 </Link>
-                <Link to={`main/feeds=${housing_type}`} className="tagBtn">
+                <Link to={`postings?${housing_type}`} className="tagBtn">
                   <span># </span>
                   {housing_type}
                 </Link>
@@ -276,7 +263,10 @@ function FeedDetail() {
                   </CountComment>
                   <LoginComment>
                     <img
-                      src="Images/FeedDetail/profile.png"
+                      src={`${
+                        JSON.parse(localStorage.getItem('user-info'))
+                          .profile_image
+                      }`}
                       alt="profile"
                     ></img>
                     <input
@@ -676,10 +666,11 @@ const ProfileImg = styled.div`
   justify-content: center;
   align-items: center;
   width: 45px;
-  width: 45px;
+
   img {
     width: 45px;
-    width: 45px;
+    height: 45px;
+    border-radius: 100%;
   }
 `;
 
