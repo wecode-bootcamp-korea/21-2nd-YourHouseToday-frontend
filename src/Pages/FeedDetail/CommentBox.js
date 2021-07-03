@@ -31,13 +31,20 @@ const CommentBox = ({
     <>
       <li className="commentLi">
         <CommentContainer>
-          <img src="Images/FeedDetail/profile.png" alt="profile"></img>
+          <img
+            src={`${
+              JSON.parse(localStorage.getItem('user-info')).profile_image
+            }`}
+            alt="profile"
+          ></img>
           <div className="commentContents">
             {edittingCommentBoxId !== comment.id ? (
               <CommentTop>
-                <span className="commentUserId">{comment.user_nickname}</span>
+                <span className="commentUserId">
+                  {JSON.parse(localStorage.getItem('user-info')).nickname}
+                </span>
 
-                <span className="commentText">{comment.text}</span>
+                <span className="commentText">{newComment}</span>
               </CommentTop>
             ) : (
               <FormEdit onBlur={formClose}>
@@ -51,8 +58,8 @@ const CommentBox = ({
             )}
             {edittingCommentBoxId !== comment.id ? (
               <CommentInfo>
-                <span className="commentDate">{() => handleDate()}</span>
-                <span class="bullit">{'・'}</span>
+                {/* <span className="commentDate">{() => handleDate()}</span>
+                <span class="bullit">{'・'}</span> */}
                 <button>좋아요</button>
                 <span class="bullit">{'・'}</span>
                 <button>답글달기</button>
